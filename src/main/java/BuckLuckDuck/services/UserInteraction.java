@@ -5,15 +5,16 @@ import BuckLuckDuck.options.Options;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class UserInteraction {
 
     private final Scanner scanner;
     private final Options options;
-    private Map<String, Command> commands;
+    private final Map<String, Command> commands;
     private ElementAction elementAction;
-    private ElementUpdater elementUpdater;
+    private final ElementUpdater elementUpdater;
 
     public UserInteraction(Options options, ElementAction elementAction, ElementUpdater elementUpdater) {
         this.scanner = new Scanner(System.in);
