@@ -39,7 +39,12 @@ public class PlaywrightMain {
             ElementAction elementAction = new ElementAction(page);
             ElementManager elementManager = new ElementManager();
             ElementUpdater elementUpdater = new ElementUpdater(page, options);
-            UserInteraction userInteraction = new UserInteraction(options, elementAction, elementUpdater);
+            UserInteraction userInteraction = new UserInteraction.Builder()
+                    .options(options)
+                    .elementAction(elementAction)
+                    .elementUpdater(elementUpdater)
+                    .elementManager(elementManager)
+                    .build();
             PageState pageState = new PageState.Builder()
                     .setPageScanner(pageScanner)
                     .setElementPrinter(elementManager)

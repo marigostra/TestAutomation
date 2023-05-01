@@ -9,12 +9,48 @@ import java.util.List;
 import java.util.Map;
 
 public class ElementManager {
+    private int elementsPerPage = 10;
+    private int visiblePage = 0;
+    private int clickableFilter = 0; // 0 - all, 1 - input, 2 - button, 3 - link, 4 - other
+
+    public void visibleSetPage(int pageNumber) {
+        visiblePage = pageNumber;
+//        printVisible(PageState.getVisibleElements());
+    }
+
+    public void nextPage() {
+        visiblePage++;
+//        printVisible(PageState.getVisibleElements());
+    }
+
+    public void prevPage() {
+        if (visiblePage > 0)
+            visiblePage--;
+//        printVisible(PageState.getVisibleElements());
+    }
+
+    public void setElementsPerPage(int elementsPerPage) {
+        this.elementsPerPage = elementsPerPage;
+//        printVisible(PageState.getVisibleElements());
+//        printClickable(PageState.getClickableElements());
+    }
+
+    public void setClickableFilter(int filter) {
+        this.clickableFilter = filter;
+        // printClickable(PageState.getClickableElements());
+    }
 
     public void printVisible(List<ElementHandle> list) {
-        int elementCounter = 0;
-        System.out.println("Visible elements:");
-        for (ElementHandle element : list) {
-            System.out.println(elementCounter++ + ": " +
+
+        int start = visiblePage * elementsPerPage;
+        int end = Math.min(start + elementsPerPage, list.size());
+
+        int totalPages = (int) Math.ceil((double) list.size() / elementsPerPage);
+
+        System.out.println("Visible elements (page " + (visiblePage + 1) + "/" + totalPages + "):");
+        for (int i = start; i < end; i++) {
+            ElementHandle element = list.get(i);
+            System.out.println(list.indexOf(element) + 1 + ": " +
                     " Element is: " +
                     element.evaluate("el => el.tagName.toLowerCase()") +
                     ". Text content is: " +
@@ -24,15 +60,17 @@ public class ElementManager {
 
     public void printClickable(List<ClickableElement> clickableElements) {
         int elementCounter = 0;
-
         Map<String, List<ClickableElement>> elementsByType = groupElementsByType(clickableElements);
-
         System.out.println("\nClickable elements:");
 
-        elementCounter = printElementsOfType("Buttons", elementsByType.get("button"), elementCounter);
-        elementCounter = printElementsOfType("Links", elementsByType.get("link"), elementCounter);
-        elementCounter = printElementsOfType("Inputs", elementsByType.get("input"), elementCounter);
-        elementCounter = printElementsOfType("Others", elementsByType.get("other"), elementCounter);
+        if (clickableFilter == 0 || clickableFilter == 1)
+            elementCounter = printElementsOfType("Inputs", elementsByType.get("input"), elementCounter);
+        if (clickableFilter == 0 || clickableFilter == 2)
+            elementCounter = printElementsOfType("Buttons", elementsByType.get("button"), elementCounter);
+        if (clickableFilter == 0 || clickableFilter == 3)
+            elementCounter = printElementsOfType("Links", elementsByType.get("link"), elementCounter);
+        if (clickableFilter == 0 || clickableFilter == 4)
+            elementCounter = printElementsOfType("Others", elementsByType.get("other"), elementCounter);
     }
 
     public List<String> getElementTypes(List<ClickableElement> clickableElements) {

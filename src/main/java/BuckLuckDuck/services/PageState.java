@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PageState {
-    private List<ElementHandle> visibleElements;
-    private List<ClickableElement> clickableElements;
+    private static List<ElementHandle> visibleElements;
+    private static List<ClickableElement> clickableElements;
     private List<String> elementTypes;
 
     private final PageScanner pageScanner;
@@ -23,8 +23,8 @@ public class PageState {
         this.elementManager = builder.elementManager;
         this.elementAction = builder.elementAction;
         this.userInteraction = builder.userInteraction;
-        this.visibleElements = new ArrayList<>();
-        this.clickableElements = new ArrayList<>();
+        visibleElements = new ArrayList<>();
+        clickableElements = new ArrayList<>();
         this.elementTypes = new ArrayList<>();
     }
 
@@ -56,6 +56,14 @@ public class PageState {
                 elementAction.clickOnElement(clickableElements, index, inputText);
             }
         }
+    }
+
+    public static List<ElementHandle> getVisibleElements() {
+        return visibleElements;
+    }
+
+    public static List<ClickableElement> getClickableElements() {
+        return clickableElements;
     }
 
     public static class Builder {
