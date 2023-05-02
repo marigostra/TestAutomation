@@ -29,8 +29,8 @@ public class PlaywrightMain {
                 LOGGER.info("Page title: " + page.title());
             });
 
-            page.navigate(options.getNavigateLink());
-            // page.navigate("https://marigostra.ru/");
+	                page.navigate(options.getNavigateLink());
+			//page.navigate("https://marigostra.ru/");
             // page.navigate("https://vk.com/");
             // page.navigate("https://letcode.in/edit");
             // page.navigate("https://www.lambdatest.com/selenium-playground/simple-form-demo");
